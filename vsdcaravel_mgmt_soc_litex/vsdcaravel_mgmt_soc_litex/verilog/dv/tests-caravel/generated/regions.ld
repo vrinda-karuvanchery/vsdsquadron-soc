@@ -1,0 +1,1 @@
+/home/vsduser/vsdcaravel_mgmt_soc_litex/verilog/dv/generated/regions.ld

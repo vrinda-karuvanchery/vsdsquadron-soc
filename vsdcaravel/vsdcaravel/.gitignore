@@ -1,0 +1,11 @@
+*.log
+*.vcd
+*.fst
+*.o
+*.elf
+*.hex
+build/
+obj/
+sim_build/
+work/
+

@@ -10,7 +10,8 @@ CONFIG ?= standalone
 SIM    ?= RTL
 
 # Paths
-DESIGNS ?= /home/vsduser
+REPO_ROOT ?= $(abspath $(PWDD)/../../../..)
+DESIGNS ?= $(REPO_ROOT)
 
 export PDK_ROOT ?= /home/vsduser/.ciel
 export PDK ?= sky130A
@@ -32,7 +33,7 @@ export GCC_PREFIX ?= riscv64-unknown-elf
 # CPU selection
 CPU ?= vexriscv
 
-CPUFLAGS_vexriscv := -march=rv32i -mabi=ilp32 -D__vexriscv__
+CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__
 CPUFLAGS_picorv32 := -march=rv32i -mabi=ilp32
 CPUFLAGS_ibex     := -march=rv32i -mabi=ilp32
 
@@ -132,8 +133,8 @@ ifeq ($(CONFIG),caravel_user_project)
 	  -o $@ $<
 else
 	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUNIT_DELAY=#1 \
-	  -y /home/vsduser/caravel/verilog/rtl \
-	  -I /home/vsduser/caravel/verilog/rtl \
+	  -y $(CARAVEL_PATH)/rtl \
+	  -I $(CARAVEL_PATH)/rtl \
 	  -f $(VERILOG_PATH)/includes/includes.rtl.$(CONFIG) \
 	  -o $@ $(CARAVEL_PATH)/rtl/__user_project_wrapper.v $<
 endif
@@ -187,4 +188,3 @@ clean:
 	rm -rf "$(GEN_INCLUDE_DIR)"
 
 .PHONY: clean hex all prepare-generated check-fw
-

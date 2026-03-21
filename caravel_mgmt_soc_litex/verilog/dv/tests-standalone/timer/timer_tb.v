@@ -55,9 +55,9 @@ module timer_tb;
 		end
 		$display("%c[1;31m",27);
 		`ifdef GL
-			$display ("Monitor: Timeout, Test GPIO (GL) Failed");
+			$display ("Monitor: Timeout, Test Timer (GL) Failed");
 		`else
-			$display ("Monitor: Timeout, Test GPIO (RTL) Failed");
+			$display ("Monitor: Timeout, Test Timer (RTL) Failed");
 		`endif
 		 $display("%c[0m",27);
 		$finish;
@@ -80,7 +80,7 @@ module timer_tb;
 
 	// Monitor
 	initial begin
-		wait(checkbits == 6'h0a);
+		wait(checkbits == 6'h01);
 		`ifdef GL
 			$display("Monitor: Test Timer (GL) Started");
 		`else 
@@ -93,30 +93,30 @@ module timer_tb;
 		    $display("Monitor: Test Timer Failed");
 		    $finish;
 		end
-//		wait(checkbits == 6'h02);
-//		$display("   countbits = 0x%x (should be 0x19)", countbits);
-//		if(countbits !== 32'h19) begin
-//		    $display("Monitor: Test Timer Failed");
-//		    $finish;
-//		end
-//		wait(checkbits == 6'h03);
-//		$display("   countbits = %x (should be 0x0f)", countbits);
-//		if(countbits !== ((32'h0f) | (3'b100))) begin
-//		    $display("Monitor: Test Timer Failed");
-//		    $finish;
-//		end
-//		wait(checkbits == 6'h04);
-//		$display("   countbits = %x (should be 0x0f)", countbits);
-//		if(countbits !== ((32'h0f) | (3'b100))) begin
-//		    $display("Monitor: Test Timer Failed");
-//		    $finish;
-//		end
-//		wait(checkbits == 6'h05);
-//		$display("   countbits = %x (should be 0x12bc)", countbits);
-//		if(countbits !== 32'h12bc) begin
-//		    $display("Monitor: Test Timer Failed");
-//		    $finish;
-//		end
+		wait(checkbits == 6'h02);
+		$display("   countbits = 0x%x (should be 0x19)", countbits);
+				if(countbits !== 32'h19) begin
+    $display("Monitor: Test Timer Failed");
+		    $finish;
+		end
+		wait(checkbits == 6'h03);
+		$display("   countbits = %x (should be 0x0f)", countbits);
+		if(countbits !== ((32'h0f) | (3'b100))) begin
+    			$display("Monitor: Test Timer Failed");
+		    $finish;
+		end
+		wait(checkbits == 6'h04);
+		$display("   countbits = %x (should be 0x0f)", countbits);
+		if(countbits !== ((32'h0f) | (3'b100))) begin
+		    $display("Monitor: Test Timer Failed");
+		    $finish;
+		end
+		wait(checkbits == 6'h05);
+		$display("   countbits = %x (should be 0x12bc)", countbits);
+		if(countbits !== 32'h12bc) begin
+		    $display("Monitor: Test Timer Failed");
+		    $finish;
+		end
 		
 		`ifdef GL
 			$display("Monitor: Test Timer (GL) Passed");

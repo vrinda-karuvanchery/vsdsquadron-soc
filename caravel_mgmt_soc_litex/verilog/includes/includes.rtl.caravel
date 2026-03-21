@@ -69,10 +69,8 @@
 -v $(CARAVEL_PATH)/rtl/open_source.v 		     
 -v $(CARAVEL_PATH)/rtl/user_id_textblock.v 		     
 
-## These blocks are manually designed 		
--v $(CARAVEL_PATH)/gl/gpio_defaults_block_0403.v     
--v $(CARAVEL_PATH)/gl/gpio_defaults_block_1803.v     
--v $(CARAVEL_PATH)/gl/gpio_defaults_block_0801.v
+## RTL sims use the parameterized gpio_defaults_block.v above.
+## The fixed GL gpio_defaults_block_* netlists are not present in this tree.
 
 # STD CELLS - they need to be below the defines.v files 
  -v $(PDK_ROOT)/$(PDK)/libs.ref/sky130_fd_io/verilog/sky130_fd_io.v
@@ -91,5 +89,4 @@
 #-v $(VERILOG_PATH)/cvc-pdk/sky130_fd_sc_hd.v
 #-v $(VERILOG_PATH)/cvc-pdk/primitives_hvl.v
 #-v $(VERILOG_PATH)/cvc-pdk/sky130_fd_sc_hvl.v
- -v $(VERILOG_PATH)/cvc-pdk/sky130_sram_2kbyte_1rw1r_32x512_8.v
-
+ -v $(VERILOG_PATH)/dv/vip/sky130_sram_2kbyte_1rw1r_32x512_8.v

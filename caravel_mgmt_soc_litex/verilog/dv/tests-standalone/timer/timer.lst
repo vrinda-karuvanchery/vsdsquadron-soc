@@ -61,7 +61,7 @@ Disassembly of section .text:
 100000b8 <end_init_bss>:
 100000b8:	60000113          	li	sp,1536
 100000bc:	30529073          	csrw	mtvec,t0
-100000c0:	0ec000ef          	jal	ra,100001ac <main>
+100000c0:	0ec000ef          	jal	100001ac <main>
 
 100000c4 <loop>:
 100000c4:	0000006f          	j	100000c4 <loop>
@@ -73,7 +73,7 @@ Disassembly of section .text:
 100000d4:	000281a3          	sb	zero,3(t0)
 100000d8:	02060863          	beqz	a2,10000108 <flashio_worker_L1>
 100000dc:	00800f13          	li	t5,8
-100000e0:	0ff67393          	andi	t2,a2,255
+100000e0:	0ff67393          	zext.b	t2,a2
 
 100000e4 <flashio_worker_L4>:
 100000e4:	0073de93          	srli	t4,t2,0x7
@@ -81,7 +81,7 @@ Disassembly of section .text:
 100000ec:	010eee93          	ori	t4,t4,16
 100000f0:	01d28023          	sb	t4,0(t0)
 100000f4:	00139393          	slli	t2,t2,0x1
-100000f8:	0ff3f393          	andi	t2,t2,255
+100000f8:	0ff3f393          	zext.b	t2,t2
 100000fc:	ffff0f13          	addi	t5,t5,-1
 10000100:	fe0f12e3          	bnez	t5,100000e4 <flashio_worker_L4>
 10000104:	00628023          	sb	t1,0(t0)

@@ -1,1 +1,1 @@
-/home/vsduser/caravel_mgmt_soc_litex/verilog/dv/generated/regions.ld
+/workspaces/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/dv/generated/regions.ld

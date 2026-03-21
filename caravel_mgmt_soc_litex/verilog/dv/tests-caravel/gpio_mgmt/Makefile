@@ -10,9 +10,19 @@ CONFIG ?= caravel
 SIM    ?= RTL
 
 # Paths
-DESIGNS ?= /home/vsduser
+WORKSPACE_ROOT ?= $(shell p="$(abspath $(PWDD))"; \
+	while [ "$$p" != "/" ]; do \
+		if [ -d "$$p/caravel" ] && [ -d "$$p/caravel_mgmt_soc_litex" ]; then \
+			echo "$$p"; exit 0; \
+		fi; \
+		p=$$(dirname "$$p"); \
+	done; \
+	echo /home/vsduser)
+DESIGNS ?= $(WORKSPACE_ROOT)
 
-export PDK_ROOT ?= /home/vsduser/.ciel
+
+AUTO_PDK_ROOT := $(firstword $(wildcard $(DESIGNS)/.ciel $(DESIGNS)/ciel /home/vsduser/.ciel /usr/local/share/pdk /usr/share/pdk /opt/pdk $(DESIGNS)/pdk $(DESIGNS)/pdks))
+export PDK_ROOT ?= $(if $(AUTO_PDK_ROOT),$(AUTO_PDK_ROOT),/home/vsduser/.ciel)
 export PDK ?= sky130A
 export CARAVEL_VERILOG_PATH ?= $(DESIGNS)/caravel/verilog
 export CORE_VERILOG_PATH    ?= $(DESIGNS)/caravel_mgmt_soc_litex/verilog
@@ -26,13 +36,14 @@ export VIP_PATH      := $(CORE_VERILOG_PATH)/dv/vip
 export FIRMWARE_PATH := $(CORE_VERILOG_PATH)/dv/firmware
 
 # Toolchain
-export GCC_PATH   ?= /home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
+AUTO_GCC_PATH := $(patsubst %/,%,$(dir $(shell command -v riscv64-unknown-elf-gcc 2>/dev/null)))
+export GCC_PATH   ?= $(if $(AUTO_GCC_PATH),$(AUTO_GCC_PATH),/home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin)
 export GCC_PREFIX ?= riscv64-unknown-elf
 
 # CPU selection
 CPU ?= vexriscv
 
-CPUFLAGS_vexriscv := -march=rv32i -mabi=ilp32 -D__vexriscv__
+CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__
 CPUFLAGS_picorv32 := -march=rv32i -mabi=ilp32
 CPUFLAGS_ibex     := -march=rv32i -mabi=ilp32
 
@@ -132,8 +143,8 @@ ifeq ($(CONFIG),caravel_user_project)
 	  -o $@ $<
 else
 	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
-	  -y /home/vsduser/caravel/verilog/rtl \
-	  -I /home/vsduser/caravel/verilog/rtl \
+	  -y $(CARAVEL_PATH)/rtl \
+	  -I $(CARAVEL_PATH)/rtl \
 	  -f $(VERILOG_PATH)/includes/includes.rtl.$(CONFIG) \
 	  -o $@ $(CARAVEL_PATH)/rtl/__user_project_wrapper.v $<
 endif
@@ -187,4 +198,3 @@ clean:
 	rm -rf "$(GEN_INCLUDE_DIR)"
 
 .PHONY: clean hex all prepare-generated check-fw
-

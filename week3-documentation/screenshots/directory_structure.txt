@@ -1,0 +1,8 @@
+week3-documentation
+├── README.md
+├── caravel_results.md
+├── diagrams
+└── screenshots
+    └── directory_structure.txt
+
+3 directories, 3 files

@@ -10,7 +10,7 @@ CONFIG ?= standalone
 SIM    ?= RTL
 
 # Paths
-REPO_ROOT ?= $(abspath $(PWDD)/../../../..)
+REPO_ROOT ?= $(abspath $(PWDD)/../../../../..)
 DESIGNS ?= $(REPO_ROOT)
 
 export PDK_ROOT ?= /home/vsduser/.ciel
@@ -27,10 +27,10 @@ export VIP_PATH      := $(CORE_VERILOG_PATH)/dv/vip
 export FIRMWARE_PATH := $(CORE_VERILOG_PATH)/dv/firmware
 
 # Toolchain
-export GCC_PATH   ?= /home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
+export GCC_PATH ?= /usr/bin
 export GCC_PREFIX ?= riscv64-unknown-elf
 
-# CPU selection
+# CPU selectio/usr/bin/riscv64-unknown-elf-gdcn
 CPU ?= vexriscv
 
 CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__

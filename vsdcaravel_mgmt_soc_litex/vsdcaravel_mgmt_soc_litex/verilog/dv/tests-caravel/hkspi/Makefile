@@ -10,12 +10,20 @@ CONFIG ?= caravel
 SIM    ?= RTL
 
 # Paths
-DESIGNS ?= /home/vsduser
+WORKSPACE_ROOT ?= $(shell p="$(abspath $(PWDD))"; \
+	while [ "$$p" != "/" ]; do \
+		if [ -d "$$p/vsdcaravel" ] && [ -d "$$p/vsdcaravel_mgmt_soc_litex" ]; then \
+			echo "$$p"; exit 0; \
+		fi; \
+		p=$$(dirname "$$p"); \
+	done; \
+	echo /home/vsduser)
+DESIGNS ?= $(WORKSPACE_ROOT)
 
 export PDK_ROOT ?=/home/vsduser/pdk/SCLPDK_V3.0_KIT
 export PDK ?= scl180
-export CARAVEL_VERILOG_PATH ?= $(DESIGNS)/vsdcaravel/verilog
-export CORE_VERILOG_PATH    ?= $(DESIGNS)/vsdcaravel_mgmt_soc_litex/verilog
+export CARAVEL_VERILOG_PATH ?= $(if $(wildcard $(DESIGNS)/vsdcaravel/vsdcaravel/verilog),$(DESIGNS)/vsdcaravel/vsdcaravel/verilog,$(DESIGNS)/vsdcaravel/verilog)
+export CORE_VERILOG_PATH    ?= $(if $(wildcard $(DESIGNS)/vsdcaravel_mgmt_soc_litex/vsdcaravel_mgmt_soc_litex/verilog),$(DESIGNS)/vsdcaravel_mgmt_soc_litex/vsdcaravel_mgmt_soc_litex/verilog,$(DESIGNS)/vsdcaravel_mgmt_soc_litex/verilog)
 export USER_PROJECT_VERILOG ?= $(DESIGNS)/verilog
 export PDKZERO=$(PDK_ROOT)/$(PDK)/iopad/cio250/4M1L/verilog/tsl18cio250/zero
 
@@ -27,13 +35,14 @@ export VIP_PATH      := $(CORE_VERILOG_PATH)/dv/vip
 export FIRMWARE_PATH := $(CORE_VERILOG_PATH)/dv/firmware
 
 # Toolchain
-export GCC_PATH   ?= /home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
+AUTO_GCC_PATH := $(patsubst %/,%,$(dir $(shell command -v riscv64-unknown-elf-gcc 2>/dev/null)))
+export GCC_PATH   ?= $(if $(AUTO_GCC_PATH),$(AUTO_GCC_PATH),/home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin)
 export GCC_PREFIX ?= riscv64-unknown-elf
 
 # CPU selection
 CPU ?= vexriscv
 
-CPUFLAGS_vexriscv := -march=rv32i -mabi=ilp32 -D__vexriscv__
+CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__
 CPUFLAGS_picorv32 := -march=rv32i -mabi=ilp32
 CPUFLAGS_ibex     := -march=rv32i -mabi=ilp32
 
@@ -133,8 +142,8 @@ ifeq ($(CONFIG),caravel_user_project)
 	  -o $@ $<
 else
 	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
-	  -y /home/vsduser/vsdcaravel/verilog/rtl \
-	  -I /home/vsduser/vsdcaravel/verilog/rtl \
+	  -y $(CARAVEL_PATH)/rtl \
+	  -I $(CARAVEL_PATH)/rtl \
 	  -I "$(PDKZERO)" \
 	  -f $(VERILOG_PATH)/includes/includes.rtl.$(CONFIG) \
 	  -o $@ /home/vsduser/Desktop/OpenROAD-flow-scripts/flow/results/scl180fs120/user_project_wrapper/base/6_final.v $<
@@ -190,4 +199,3 @@ clean:
 	rm -rf "$(GEN_INCLUDE_DIR)"
 
 .PHONY: clean hex all prepare-generated check-fw
-

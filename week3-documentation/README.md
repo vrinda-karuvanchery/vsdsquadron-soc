@@ -2,6 +2,15 @@
 
 This directory captures the Week 3 verification work for the management SoC, with emphasis on the debugging that was required before the standalone SPI test could be run from the `spi_master` folder.
 
+## Verification Flow Overview
+
+![Week 3 verification flow](../screenshots/Slide1.png)
+
+The flow begins by compiling the firmware, linker inputs, and RTL testbench so the simulator can build a complete standalone verification setup.
+The generated hex image is then loaded into simulated memory, and the RISC-V management core executes the test program against the target peripheral logic.
+During simulation, the testbench monitors register activity, protocol behavior, and waveform checkpoints to compare the observed responses with the expected results.
+If the logs, checkpoints, and waveform outputs all match, the design is treated as functionally verified for the covered cases and ready for further integration or debug closure.
+
 ## Directory Contents
 
 - `README.md`: Week 3 verification summary and SPI debug flow

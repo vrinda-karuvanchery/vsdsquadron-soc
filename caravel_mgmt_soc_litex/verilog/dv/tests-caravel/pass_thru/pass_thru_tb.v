@@ -132,6 +132,7 @@ module pass_thru_tb;
 	endtask
 	
 	integer i;
+	integer start_wait_cycles;
 
     // Now drive the digital signals on the housekeeping SPI
 	reg [7:0] tbdata;
@@ -148,9 +149,11 @@ module pass_thru_tb;
 	    #2000;
 
 	    RSTB <= 1'b1;
+	    $display("Pass-thru TB: reset released, waiting for checkbits = 0xA000");
 
 	    // Wait on start of program execution
 	    wait(checkbits == 16'hA000);
+	    $display("Pass-thru TB: saw initial checkbits = 0x%04x", checkbits);
 
             // First do a normal read from the housekeeping SPI to
 	    // make sure the housekeeping SPI works.
@@ -255,6 +258,7 @@ module pass_thru_tb;
 
 	    // Wait for processor to restart
 	    wait(checkbits == 16'hA000);
+	    $display("Pass-thru TB: saw restart checkbits = 0x%04x", checkbits);
 
 	    // Read product ID register again
 
@@ -281,6 +285,23 @@ module pass_thru_tb;
 		
 	    #10000;
  	    $finish;
+	end
+
+	initial begin
+	    start_wait_cycles = 0;
+	    wait(RSTB === 1'b1);
+	    while (checkbits !== 16'hA000 && start_wait_cycles < 2000) begin
+		#1000;
+		start_wait_cycles = start_wait_cycles + 1;
+		if ((start_wait_cycles % 100) == 0)
+		    $display("Pass-thru TB: still waiting, t=%0t checkbits=0x%04x", $time, checkbits);
+	    end
+	    if (checkbits !== 16'hA000)
+		$display("Pass-thru TB: timeout waiting for initial checkbits, final value=0x%04x at t=%0t", checkbits, $time);
+	end
+
+	always @(checkbits) begin
+	    $display("Pass-thru TB: checkbits changed to 0x%04x at t=%0t", checkbits, $time);
 	end
 
 	wire VDD3V3;

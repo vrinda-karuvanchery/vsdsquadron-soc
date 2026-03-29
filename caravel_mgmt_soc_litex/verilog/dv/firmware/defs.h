@@ -143,8 +143,8 @@ extern uint32_t flashio_worker_end;
 #define reg_user_irq_enable	(*(volatile uint32_t*) CSR_USER_IRQ_ENA_OUT_ADDR)
 
 // Debug reg DEBUG_ON
-//define reg_debug_1 (*(volatile uint32_t*)0x300FFFF8)
-//define reg_debug_2 (*(volatile uint32_t*)0x300FFFFC)
+#define reg_debug_1 (*(volatile uint32_t*)0x300FFFF8)
+#define reg_debug_2 (*(volatile uint32_t*)0x300FFFFC)
 
 
 // Flash Control SPI Configuration (2D00_0000)
@@ -269,9 +269,6 @@ extern uint32_t flashio_worker_end;
 
 #define USER_SPACE_ADDR 0x30000000 
 #define USER_SPACE_SIZE 0xFFFFC // sum with USER_SPACE_ADDR is the address of last address
-
-#define reg_debug_2 (*(volatile unsigned int*)(USER_SPACE_ADDR + USER_SPACE_SIZE))
-#define reg_debug_1 (*(volatile unsigned int*)(USER_SPACE_ADDR + USER_SPACE_SIZE - 4))
 
 #define CPU_TYPE VexRISC
 #endif

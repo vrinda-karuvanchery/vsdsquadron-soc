@@ -10,8 +10,7 @@ CONFIG ?= standalone
 SIM    ?= RTL
 
 # Paths
-REPO_ROOT ?= $(abspath $(PWDD)/../../../../..)
-DESIGNS ?= $(REPO_ROOT)
+DESIGNS ?= /home/vsduser
 
 export PDK_ROOT ?= /home/vsduser/.ciel
 export PDK ?= sky130A
@@ -27,13 +26,13 @@ export VIP_PATH      := $(CORE_VERILOG_PATH)/dv/vip
 export FIRMWARE_PATH := $(CORE_VERILOG_PATH)/dv/firmware
 
 # Toolchain
-export GCC_PATH ?= /usr/bin
+export GCC_PATH   ?= /home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
 export GCC_PREFIX ?= riscv64-unknown-elf
 
-# CPU selectio/usr/bin/riscv64-unknown-elf-gdcn
+# CPU selection
 CPU ?= vexriscv
 
-CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__
+CPUFLAGS_vexriscv := -march=rv32i -mabi=ilp32 -D__vexriscv__
 CPUFLAGS_picorv32 := -march=rv32i -mabi=ilp32
 CPUFLAGS_ibex     := -march=rv32i -mabi=ilp32
 
@@ -133,8 +132,8 @@ ifeq ($(CONFIG),caravel_user_project)
 	  -o $@ $<
 else
 	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUNIT_DELAY=#1 \
-	  -y $(CARAVEL_PATH)/rtl \
-	  -I $(CARAVEL_PATH)/rtl \
+	  -y /home/vsduser/caravel/verilog/rtl \
+	  -I /home/vsduser/caravel/verilog/rtl \
 	  -f $(VERILOG_PATH)/includes/includes.rtl.$(CONFIG) \
 	  -o $@ $(CARAVEL_PATH)/rtl/__user_project_wrapper.v $<
 endif
@@ -188,3 +187,4 @@ clean:
 	rm -rf "$(GEN_INCLUDE_DIR)"
 
 .PHONY: clean hex all prepare-generated check-fw
+

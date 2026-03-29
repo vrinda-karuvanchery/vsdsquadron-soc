@@ -20,7 +20,6 @@ WORKSPACE_ROOT ?= $(shell p="$(abspath $(PWDD))"; \
 	echo /home/vsduser)
 DESIGNS ?= $(WORKSPACE_ROOT)
 
-
 AUTO_PDK_ROOT := $(firstword $(wildcard $(DESIGNS)/.ciel $(DESIGNS)/ciel /home/vsduser/.ciel /usr/local/share/pdk /usr/share/pdk /opt/pdk $(DESIGNS)/pdk $(DESIGNS)/pdks))
 export PDK_ROOT ?= $(if $(AUTO_PDK_ROOT),$(AUTO_PDK_ROOT),/home/vsduser/.ciel)
 export PDK ?= sky130A

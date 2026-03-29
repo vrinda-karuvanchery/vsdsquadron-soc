@@ -61,7 +61,7 @@ Disassembly of section .text:
 100000b8 <end_init_bss>:
 100000b8:	60000113          	li	sp,1536
 100000bc:	30529073          	csrw	mtvec,t0
-100000c0:	188000ef          	jal	10000248 <main>
+100000c0:	188000ef          	jal	ra,10000248 <main>
 
 100000c4 <loop>:
 100000c4:	0000006f          	j	100000c4 <loop>
@@ -73,7 +73,7 @@ Disassembly of section .text:
 100000d4:	000281a3          	sb	zero,3(t0)
 100000d8:	02060863          	beqz	a2,10000108 <flashio_worker_L1>
 100000dc:	00800f13          	li	t5,8
-100000e0:	0ff67393          	zext.b	t2,a2
+100000e0:	0ff67393          	andi	t2,a2,255
 
 100000e4 <flashio_worker_L4>:
 100000e4:	0073de93          	srli	t4,t2,0x7
@@ -81,7 +81,7 @@ Disassembly of section .text:
 100000ec:	010eee93          	ori	t4,t4,16
 100000f0:	01d28023          	sb	t4,0(t0)
 100000f4:	00139393          	slli	t2,t2,0x1
-100000f8:	0ff3f393          	zext.b	t2,t2
+100000f8:	0ff3f393          	andi	t2,t2,255
 100000fc:	ffff0f13          	addi	t5,t5,-1
 10000100:	fe0f12e3          	bnez	t5,100000e4 <flashio_worker_L4>
 10000104:	00628023          	sb	t1,0(t0)
@@ -167,7 +167,7 @@ Disassembly of section .text:
 100001fc:	00812423          	sw	s0,8(sp)
 10000200:	01010413          	addi	s0,sp,16
 10000204:	00000513          	li	a0,0
-10000208:	fa5ff0ef          	jal	100001ac <spi_write>
+10000208:	fa5ff0ef          	jal	ra,100001ac <spi_write>
 1000020c:	00000013          	nop
 10000210:	f00057b7          	lui	a5,0xf0005
 10000214:	80478793          	addi	a5,a5,-2044 # f0004804 <_etext+0xe000407c>
@@ -177,7 +177,7 @@ Disassembly of section .text:
 10000224:	f00057b7          	lui	a5,0xf0005
 10000228:	80c78793          	addi	a5,a5,-2036 # f000480c <_etext+0xe0004084>
 1000022c:	0007a783          	lw	a5,0(a5)
-10000230:	0ff7f793          	zext.b	a5,a5
+10000230:	0ff7f793          	andi	a5,a5,255
 10000234:	00078513          	mv	a0,a5
 10000238:	00c12083          	lw	ra,12(sp)
 1000023c:	00812403          	lw	s0,8(sp)
@@ -355,14 +355,14 @@ Disassembly of section .text:
 100004e4:	00170713          	addi	a4,a4,1 # 10001 <_fstack+0xfa01>
 100004e8:	00e7a023          	sw	a4,0(a5)
 100004ec:	00300513          	li	a0,3
-100004f0:	cbdff0ef          	jal	100001ac <spi_write>
+100004f0:	cbdff0ef          	jal	ra,100001ac <spi_write>
 100004f4:	00000513          	li	a0,0
-100004f8:	cb5ff0ef          	jal	100001ac <spi_write>
+100004f8:	cb5ff0ef          	jal	ra,100001ac <spi_write>
 100004fc:	00000513          	li	a0,0
-10000500:	cadff0ef          	jal	100001ac <spi_write>
+10000500:	cadff0ef          	jal	ra,100001ac <spi_write>
 10000504:	00400513          	li	a0,4
-10000508:	ca5ff0ef          	jal	100001ac <spi_write>
-1000050c:	ce9ff0ef          	jal	100001f4 <spi_read>
+10000508:	ca5ff0ef          	jal	ra,100001ac <spi_write>
+1000050c:	ce9ff0ef          	jal	ra,100001f4 <spi_read>
 10000510:	00050793          	mv	a5,a0
 10000514:	fef42623          	sw	a5,-20(s0)
 10000518:	fec42783          	lw	a5,-20(s0)
@@ -372,7 +372,7 @@ Disassembly of section .text:
 10000528:	a0410737          	lui	a4,0xa0410
 1000052c:	00e6e733          	or	a4,a3,a4
 10000530:	00e7a023          	sw	a4,0(a5)
-10000534:	cc1ff0ef          	jal	100001f4 <spi_read>
+10000534:	cc1ff0ef          	jal	ra,100001f4 <spi_read>
 10000538:	00050793          	mv	a5,a0
 1000053c:	fef42623          	sw	a5,-20(s0)
 10000540:	fec42783          	lw	a5,-20(s0)
@@ -382,7 +382,7 @@ Disassembly of section .text:
 10000550:	a0420737          	lui	a4,0xa0420
 10000554:	00e6e733          	or	a4,a3,a4
 10000558:	00e7a023          	sw	a4,0(a5)
-1000055c:	c99ff0ef          	jal	100001f4 <spi_read>
+1000055c:	c99ff0ef          	jal	ra,100001f4 <spi_read>
 10000560:	00050793          	mv	a5,a0
 10000564:	fef42623          	sw	a5,-20(s0)
 10000568:	fec42783          	lw	a5,-20(s0)
@@ -401,14 +401,14 @@ Disassembly of section .text:
 1000059c:	00170713          	addi	a4,a4,1 # 10001 <_fstack+0xfa01>
 100005a0:	00e7a023          	sw	a4,0(a5)
 100005a4:	00300513          	li	a0,3
-100005a8:	c05ff0ef          	jal	100001ac <spi_write>
+100005a8:	c05ff0ef          	jal	ra,100001ac <spi_write>
 100005ac:	00000513          	li	a0,0
-100005b0:	bfdff0ef          	jal	100001ac <spi_write>
+100005b0:	bfdff0ef          	jal	ra,100001ac <spi_write>
 100005b4:	00000513          	li	a0,0
-100005b8:	bf5ff0ef          	jal	100001ac <spi_write>
+100005b8:	bf5ff0ef          	jal	ra,100001ac <spi_write>
 100005bc:	00800513          	li	a0,8
-100005c0:	bedff0ef          	jal	100001ac <spi_write>
-100005c4:	c31ff0ef          	jal	100001f4 <spi_read>
+100005c0:	bedff0ef          	jal	ra,100001ac <spi_write>
+100005c4:	c31ff0ef          	jal	ra,100001f4 <spi_read>
 100005c8:	00050793          	mv	a5,a0
 100005cc:	fef42623          	sw	a5,-20(s0)
 100005d0:	fec42783          	lw	a5,-20(s0)
@@ -418,7 +418,7 @@ Disassembly of section .text:
 100005e0:	a0440737          	lui	a4,0xa0440
 100005e4:	00e6e733          	or	a4,a3,a4
 100005e8:	00e7a023          	sw	a4,0(a5)
-100005ec:	c09ff0ef          	jal	100001f4 <spi_read>
+100005ec:	c09ff0ef          	jal	ra,100001f4 <spi_read>
 100005f0:	00050793          	mv	a5,a0
 100005f4:	fef42623          	sw	a5,-20(s0)
 100005f8:	fec42783          	lw	a5,-20(s0)
@@ -437,14 +437,14 @@ Disassembly of section .text:
 1000062c:	00170713          	addi	a4,a4,1 # 10001 <_fstack+0xfa01>
 10000630:	00e7a023          	sw	a4,0(a5)
 10000634:	00300513          	li	a0,3
-10000638:	b75ff0ef          	jal	100001ac <spi_write>
+10000638:	b75ff0ef          	jal	ra,100001ac <spi_write>
 1000063c:	00000513          	li	a0,0
-10000640:	b6dff0ef          	jal	100001ac <spi_write>
+10000640:	b6dff0ef          	jal	ra,100001ac <spi_write>
 10000644:	00000513          	li	a0,0
-10000648:	b65ff0ef          	jal	100001ac <spi_write>
+10000648:	b65ff0ef          	jal	ra,100001ac <spi_write>
 1000064c:	00a00513          	li	a0,10
-10000650:	b5dff0ef          	jal	100001ac <spi_write>
-10000654:	ba1ff0ef          	jal	100001f4 <spi_read>
+10000650:	b5dff0ef          	jal	ra,100001ac <spi_write>
+10000654:	ba1ff0ef          	jal	ra,100001f4 <spi_read>
 10000658:	00050793          	mv	a5,a0
 1000065c:	fef42623          	sw	a5,-20(s0)
 10000660:	fec42783          	lw	a5,-20(s0)
@@ -454,7 +454,7 @@ Disassembly of section .text:
 10000670:	a0460737          	lui	a4,0xa0460
 10000674:	00e6e733          	or	a4,a3,a4
 10000678:	00e7a023          	sw	a4,0(a5)
-1000067c:	b79ff0ef          	jal	100001f4 <spi_read>
+1000067c:	b79ff0ef          	jal	ra,100001f4 <spi_read>
 10000680:	00050793          	mv	a5,a0
 10000684:	fef42623          	sw	a5,-20(s0)
 10000688:	fec42783          	lw	a5,-20(s0)
@@ -464,7 +464,7 @@ Disassembly of section .text:
 10000698:	a0470737          	lui	a4,0xa0470
 1000069c:	00e6e733          	or	a4,a3,a4
 100006a0:	00e7a023          	sw	a4,0(a5)
-100006a4:	b51ff0ef          	jal	100001f4 <spi_read>
+100006a4:	b51ff0ef          	jal	ra,100001f4 <spi_read>
 100006a8:	00050793          	mv	a5,a0
 100006ac:	fef42623          	sw	a5,-20(s0)
 100006b0:	fec42783          	lw	a5,-20(s0)
@@ -474,7 +474,7 @@ Disassembly of section .text:
 100006c0:	a0480737          	lui	a4,0xa0480
 100006c4:	00e6e733          	or	a4,a3,a4
 100006c8:	00e7a023          	sw	a4,0(a5)
-100006cc:	b29ff0ef          	jal	100001f4 <spi_read>
+100006cc:	b29ff0ef          	jal	ra,100001f4 <spi_read>
 100006d0:	00050793          	mv	a5,a0
 100006d4:	fef42623          	sw	a5,-20(s0)
 100006d8:	fec42783          	lw	a5,-20(s0)
@@ -484,7 +484,7 @@ Disassembly of section .text:
 100006e8:	a0490737          	lui	a4,0xa0490
 100006ec:	00e6e733          	or	a4,a3,a4
 100006f0:	00e7a023          	sw	a4,0(a5)
-100006f4:	b01ff0ef          	jal	100001f4 <spi_read>
+100006f4:	b01ff0ef          	jal	ra,100001f4 <spi_read>
 100006f8:	00050793          	mv	a5,a0
 100006fc:	fef42623          	sw	a5,-20(s0)
 10000700:	fec42783          	lw	a5,-20(s0)
@@ -494,7 +494,7 @@ Disassembly of section .text:
 10000710:	a04a0737          	lui	a4,0xa04a0
 10000714:	00e6e733          	or	a4,a3,a4
 10000718:	00e7a023          	sw	a4,0(a5)
-1000071c:	ad9ff0ef          	jal	100001f4 <spi_read>
+1000071c:	ad9ff0ef          	jal	ra,100001f4 <spi_read>
 10000720:	00050793          	mv	a5,a0
 10000724:	fef42623          	sw	a5,-20(s0)
 10000728:	fec42783          	lw	a5,-20(s0)

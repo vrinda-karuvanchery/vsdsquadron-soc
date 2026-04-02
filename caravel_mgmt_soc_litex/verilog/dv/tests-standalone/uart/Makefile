@@ -10,13 +10,15 @@ CONFIG ?= standalone
 SIM    ?= RTL
 
 # Paths
-DESIGNS ?= /home/vsduser
+DESIGNS ?= /workspaces/vsdsquadron-soc
+export PDK_ROOT ?= /workspaces/vsdsquadron-soc/.ciel
 
-export PDK_ROOT ?= /home/vsduser/.ciel
 export PDK ?= sky130A
 export CARAVEL_VERILOG_PATH ?= $(DESIGNS)/caravel/verilog
 export CORE_VERILOG_PATH    ?= $(DESIGNS)/caravel_mgmt_soc_litex/verilog
 export USER_PROJECT_VERILOG ?= $(DESIGNS)/verilog
+export GLS_NETLIST ?= /workspaces/OpenROAD-flow-scripts/flow/results/sky130hd/user_project_wrapper/base/1_2_yosys.v
+
 
 export CARAVEL_PATH := $(CARAVEL_VERILOG_PATH)
 export VERILOG_PATH := $(CORE_VERILOG_PATH)
@@ -26,15 +28,18 @@ export VIP_PATH      := $(CORE_VERILOG_PATH)/dv/vip
 export FIRMWARE_PATH := $(CORE_VERILOG_PATH)/dv/firmware
 
 # Toolchain
-export GCC_PATH   ?= /home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
+export GCC_PATH   ?= /usr/bin
 export GCC_PREFIX ?= riscv64-unknown-elf
 
 # CPU selection
 CPU ?= vexriscv
 
-CPUFLAGS_vexriscv := -march=rv32i -mabi=ilp32 -D__vexriscv__
-CPUFLAGS_picorv32 := -march=rv32i -mabi=ilp32
-CPUFLAGS_ibex     := -march=rv32i -mabi=ilp32
+# CPU selection
+CPU ?= vexriscv
+
+CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__
+CPUFLAGS_picorv32 := -march=rv32i_zicsr -mabi=ilp32
+CPUFLAGS_ibex     := -march=rv32i_zicsr -mabi=ilp32
 
 LINKER_SCRIPT :=
 SOURCE_FILES  :=
@@ -115,7 +120,7 @@ check-fw: prepare-generated
 	#sed -ie 's/@10/@00/g' $@
 	sed -i 's/^@10000000/@00000000/' $@
 
-%.bin: %.elf
+i%.bin: %.elf
 	$(GCC_PATH)/$(GCC_PREFIX)-objcopy -O binary $< /dev/stdout | tail -c +1048577 > $@
 
 # -----------------------------------------------------------------------------
@@ -148,7 +153,8 @@ ifeq ($(CONFIG),caravel_user_project)
 else
 	iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
 	  -f$(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
-	  -o $@ $(CARAVEL_PATH)/gl/__user_project_wrapper.v $<
+	  -o $@ $(GLS_NETLIST) $<
+
 endif
 endif
 
@@ -186,5 +192,5 @@ clean:
 	rm -f *.hexie
 	rm -rf "$(GEN_INCLUDE_DIR)"
 
-.PHONY: clean hex all prepare-generated check-fw
+.PHONY: clean hex all prepare-generated check-fw-gl
 

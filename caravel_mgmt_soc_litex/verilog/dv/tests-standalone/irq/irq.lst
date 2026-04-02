@@ -61,7 +61,7 @@ Disassembly of section .text:
 100000b8 <end_init_bss>:
 100000b8:	60000113          	li	sp,1536
 100000bc:	30529073          	csrw	mtvec,t0
-100000c0:	284000ef          	jal	ra,10000344 <main>
+100000c0:	284000ef          	jal	10000344 <main>
 
 100000c4 <loop>:
 100000c4:	0000006f          	j	100000c4 <loop>
@@ -73,7 +73,7 @@ Disassembly of section .text:
 100000d4:	000281a3          	sb	zero,3(t0)
 100000d8:	02060863          	beqz	a2,10000108 <flashio_worker_L1>
 100000dc:	00800f13          	li	t5,8
-100000e0:	0ff67393          	andi	t2,a2,255
+100000e0:	0ff67393          	zext.b	t2,a2
 
 100000e4 <flashio_worker_L4>:
 100000e4:	0073de93          	srli	t4,t2,0x7
@@ -81,7 +81,7 @@ Disassembly of section .text:
 100000ec:	010eee93          	ori	t4,t4,16
 100000f0:	01d28023          	sb	t4,0(t0)
 100000f4:	00139393          	slli	t2,t2,0x1
-100000f8:	0ff3f393          	andi	t2,t2,255
+100000f8:	0ff3f393          	zext.b	t2,t2
 100000fc:	ffff0f13          	addi	t5,t5,-1
 10000100:	fe0f12e3          	bnez	t5,100000e4 <flashio_worker_L4>
 10000104:	00628023          	sb	t1,0(t0)
@@ -182,7 +182,7 @@ Disassembly of section .text:
 10000228:	00112e23          	sw	ra,28(sp)
 1000022c:	00812c23          	sw	s0,24(sp)
 10000230:	02010413          	addi	s0,sp,32
-10000234:	fc9ff0ef          	jal	ra,100001fc <irq_pending>
+10000234:	fc9ff0ef          	jal	100001fc <irq_pending>
 10000238:	fea42623          	sw	a0,-20(s0)
 1000023c:	fec42783          	lw	a5,-20(s0)
 10000240:	0017f793          	andi	a5,a5,1
@@ -192,12 +192,12 @@ Disassembly of section .text:
 10000250:	00100713          	li	a4,1
 10000254:	00e7a023          	sw	a4,0(a5)
 10000258:	00100713          	li	a4,1
-1000025c:	00e01023          	sh	a4,0(zero) # 0 <_edata>
-10000260:	f4dff0ef          	jal	ra,100001ac <irq_getmask>
+1000025c:	00e01023          	sh	a4,0(zero) # 0 <flag>
+10000260:	f4dff0ef          	jal	100001ac <irq_getmask>
 10000264:	00050793          	mv	a5,a0
 10000268:	ffe7f793          	andi	a5,a5,-2
 1000026c:	00078513          	mv	a0,a5
-10000270:	f65ff0ef          	jal	ra,100001d4 <irq_setmask>
+10000270:	f65ff0ef          	jal	100001d4 <irq_setmask>
 10000274:	00000013          	nop
 10000278:	01c12083          	lw	ra,28(sp)
 1000027c:	01812403          	lw	s0,24(sp)
@@ -273,19 +273,19 @@ Disassembly of section .text:
 10000364:	f00037b7          	lui	a5,0xf0003
 10000368:	03c78793          	addi	a5,a5,60 # f000303c <_etext+0xe0002be4>
 1000036c:	0007a023          	sw	zero,0(a5)
-10000370:	00001023          	sh	zero,0(zero) # 0 <_edata>
+10000370:	00001023          	sh	zero,0(zero) # 0 <flag>
 10000374:	00000513          	li	a0,0
-10000378:	fa5ff0ef          	jal	ra,1000031c <irq_setmask>
+10000378:	fa5ff0ef          	jal	1000031c <irq_setmask>
 1000037c:	00100513          	li	a0,1
-10000380:	f41ff0ef          	jal	ra,100002c0 <irq_setie>
+10000380:	f41ff0ef          	jal	100002c0 <irq_setie>
 10000384:	000017b7          	lui	a5,0x1
 10000388:	80078793          	addi	a5,a5,-2048 # 800 <_fstack+0x200>
 1000038c:	3047a073          	csrs	mie,a5
-10000390:	f65ff0ef          	jal	ra,100002f4 <irq_getmask>
+10000390:	f65ff0ef          	jal	100002f4 <irq_getmask>
 10000394:	00050793          	mv	a5,a0
 10000398:	0017e793          	ori	a5,a5,1
 1000039c:	00078513          	mv	a0,a5
-100003a0:	f7dff0ef          	jal	ra,1000031c <irq_setmask>
+100003a0:	f7dff0ef          	jal	1000031c <irq_setmask>
 100003a4:	f00057b7          	lui	a5,0xf0005
 100003a8:	00878793          	addi	a5,a5,8 # f0005008 <_etext+0xe0004bb0>
 100003ac:	0007a023          	sw	zero,0(a5)
@@ -310,7 +310,7 @@ Disassembly of section .text:
 100003f8:	03c78793          	addi	a5,a5,60 # f000303c <_etext+0xe0002be4>
 100003fc:	00010737          	lui	a4,0x10
 10000400:	00e7a023          	sw	a4,0(a5)
-10000404:	00005783          	lhu	a5,0(zero) # 0 <_edata>
+10000404:	00005783          	lhu	a5,0(zero) # 0 <flag>
 10000408:	01079793          	slli	a5,a5,0x10
 1000040c:	0107d793          	srli	a5,a5,0x10
 10000410:	fe0782e3          	beqz	a5,100003f4 <main+0xb0>

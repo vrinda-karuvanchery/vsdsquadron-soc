@@ -1,4 +1,4 @@
-# -----------------------------------------------------------------------------
+# ----i-------------------------------------------------------------------------
 # Clean Makefile for caravel_mgmt_soc_litex standalone tests (gpio_mgmt)
 # Adds auto-symlink so linker script INCLUDE ../generated/regions.ld works.
 # -----------------------------------------------------------------------------
@@ -10,13 +10,17 @@ CONFIG ?= standalone
 SIM    ?= RTL
 
 # Paths
-DESIGNS ?= /home/vsduser
+DESIGNS ?= /workspaces/vsdsquadron-soc
 
-export PDK_ROOT ?= /home/vsduser/.ciel
+
+export PDK_ROOT ?= /workspaces/vsdsquadron-soc/.ciel
 export PDK ?= sky130A
 export CARAVEL_VERILOG_PATH ?= $(DESIGNS)/caravel/verilog
 export CORE_VERILOG_PATH    ?= $(DESIGNS)/caravel_mgmt_soc_litex/verilog
 export USER_PROJECT_VERILOG ?= $(DESIGNS)/verilog
+export GLS_NETLIST ?= /workspaces/OpenROAD-flow-scripts/flow/results/sky130hd/user_project_wrapper/base/1_2_yosys.v
+
+
 
 export CARAVEL_PATH := $(CARAVEL_VERILOG_PATH)
 export VERILOG_PATH := $(CORE_VERILOG_PATH)
@@ -26,15 +30,16 @@ export VIP_PATH      := $(CORE_VERILOG_PATH)/dv/vip
 export FIRMWARE_PATH := $(CORE_VERILOG_PATH)/dv/firmware
 
 # Toolchain
-export GCC_PATH   ?= /home/vsduser/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
+export GCC_PATH   ?= /usr/bin
 export GCC_PREFIX ?= riscv64-unknown-elf
 
 # CPU selection
 CPU ?= vexriscv
 
-CPUFLAGS_vexriscv := -march=rv32i -mabi=ilp32 -D__vexriscv__
-CPUFLAGS_picorv32 := -march=rv32i -mabi=ilp32
-CPUFLAGS_ibex     := -march=rv32i -mabi=ilp32
+CPUFLAGS_vexriscv := -march=rv32i_zicsr -mabi=ilp32 -D__vexriscv__
+CPUFLAGS_picorv32 := -march=rv32i_zicsr -mabi=ilp32
+CPUFLAGS_ibex     := -march=rv32i_zicsr -mabi=ilp32
+
 
 LINKER_SCRIPT :=
 SOURCE_FILES  :=
@@ -94,6 +99,10 @@ check-fw: prepare-generated
 		test -f $$f || (echo "ERROR: Missing source file: $$f"; exit 1); \
 	done
 
+        check-gl:
+	@test -f "$(GLS_NETLIST)" || (echo "ERROR: Missing GLS netlist: $(GLS_NETLIST)"; exit 1)
+
+
 %.elf: %.c check-fw
 	$(GCC_PATH)/$(GCC_PREFIX)-gcc -g \
 	  -I$(FIRMWARE_PATH) \
@@ -122,7 +131,7 @@ check-fw: prepare-generated
 # Run simulations
 # -----------------------------------------------------------------------------
 
-%.vvp: %_tb.v %.hex
+%.vvp: %_tb.v %.hex check-gl
 
 ifeq ($(SIM),RTL)
 ifeq ($(CONFIG),caravel_user_project)
@@ -144,11 +153,12 @@ ifeq ($(CONFIG),caravel_user_project)
 	iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
 	  -f$(VERILOG_PATH)/includes/includes.gl.caravel \
 	  -f$(USER_PROJECT_VERILOG)/includes/includes.gl.$(CONFIG) \
-	  -o $@ $<
+	 -o $@ $(GLS_NETLIST) $<
 else
 	iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
 	  -f$(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
-	  -o $@ $(CARAVEL_PATH)/gl/__user_project_wrapper.v $<
+	-o $@ $(GLS_NETLIST) $<
+
 endif
 endif
 
@@ -186,5 +196,5 @@ clean:
 	rm -f *.hexie
 	rm -rf "$(GEN_INCLUDE_DIR)"
 
-.PHONY: clean hex all prepare-generated check-fw
+.PHONY: clean hex all prepare-generated check-fw check-gl
 

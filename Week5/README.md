@@ -171,17 +171,18 @@ The table below summarizes the current state of Week 5 work.
 
 | Area | Test | RTL | GL | Current status |
 |---|---|---:|---:|---|
-| Standalone | `gpio_mgmt` | not the Week 5 focus | PASS | GLS pass captured |
-| Standalone | `mem` | not the Week 5 focus | PASS | GLS pass captured |
-| Standalone | `uart` | not the Week 5 focus | PASS | GLS pass captured |
-| Standalone | `spi_master` | not the Week 5 focus | PASS | GLS pass captured |
-| Standalone | `debug` | not the Week 5 focus | FAIL | timeout |
-| Standalone | `irq` | not the Week 5 focus | FAIL | timeout |
-| Standalone | `timer` | not the Week 5 focus | FAIL | timeout |
+| Standalone | `gpio_mgmt` | PASS | PASS | GLS pass captured |
+| Standalone | `mem` | PASS | PASS | GLS pass captured |
+| Standalone | `uart` | PASS | PASS | GLS pass captured |
+| Standalone | `spi_master` | PASS | PASS | GLS pass captured |
+| Standalone | `debug` | PASS | FAIL | timeout |
+| Standalone | `irq` | PASS | FAIL | timeout |
+| Standalone | `timer` | PASS | FAIL | timeout |
 | Caravel | `mem` | PASS | FAIL | GL now boots and starts flash, then times out before checkpoint activity |
 | Caravel | `spi_master` | PASS | FAIL | GL now boots and starts flash, then times out before checkpoint activity |
-| Caravel | `pll` | FAIL | not completed | Makefile fixed, RTL now reaches first checkpoint but monitor/counting logic still needs work |
-| Caravel | `gpio_mgmt` | not yet rerun in this cycle | compile path fixed | stale GL wrapper path repaired |
+| Caravel | `pll` | FAIL | FAIL | Makefile fixed, RTL now reaches first checkpoint but monitor/counting logic still needs work |
+| Caravel | `gpio_mgmt` | PASS | FAIL | stale GL wrapper path repaired; GL rerun still pending in this debug cycle |
+| Caravel | `sysctrl` | FAIL | FAIL | not yet debugged in this cycle; kept as failing in the current matrix |
 
 ## Standalone GLS Evidence
 

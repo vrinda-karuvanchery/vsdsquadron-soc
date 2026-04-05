@@ -184,36 +184,6 @@ The table below summarizes the current state of Week 5 work.
 | Caravel | `gpio_mgmt` | PASS | FAIL | stale GL wrapper path repaired; GL rerun still pending in this debug cycle |
 | Caravel | `sysctrl` | FAIL | FAIL | not yet debugged in this cycle; kept as failing in the current matrix |
 
-## Standalone GLS Evidence
-
-### `spi_master` GLS pass
-
-![spi_master GLS pass](images/spi_master_gl_pass.png)
-
-### `uart` GLS pass
-
-![uart GLS pass](images/uart_gl_pass.png)
-
-### `gpio_mgmt` GLS pass
-
-![gpio_mgmt GLS pass](images/gpio_mgmt_gl_pass.png)
-
-### `mem` GLS pass
-
-![mem GLS pass](images/mem_gl_pass.png)
-
-### `debug` GLS fail
-
-![debug GLS fail](images/debug_gl_fail.png)
-
-### `irq` GLS fail
-
-![irq GLS fail](images/irq_gl_fail.png)
-
-### `timer` GLS fail
-
-![timer GLS fail](images/timer_gl_fail.png)
-
 ## Debugging Trail
 
 This is the condensed sequence of debugging steps that got the Caravel flow from “does not boot” to “boots, starts flash, but still fails later in GL”.

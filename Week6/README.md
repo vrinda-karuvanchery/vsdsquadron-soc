@@ -74,6 +74,13 @@ The OpenROAD backend run was executed from:
 /workspaces/OpenROAD-flow-scripts/flow/designs/src/housekeeping_spi/housekeeping_spi.v
 ```
 
+Evidence:
+
+![ORFS design setup for `housekeeping_spi` in the OpenROAD flow workspace.](./images/Screenshot%202026-04-06%20at%2010.19.15%20PM.png)
+![Creation of the `sky130hd/housekeeping_spi` design configuration directory in ORFS.](./images/Screenshot%202026-04-06%20at%2010.22.45%20PM.png)
+![`housekeeping_spi.v` copied into the ORFS source tree for synthesis and backend flow.](./images/Screenshot%202026-04-06%20at%2010.23.51%20PM.png)
+![Week 6 OpenROAD configuration setup showing the dedicated design folders for the selected block.](./images/Screenshot%202026-04-06%20at%2010.24.03%20PM.png)
+
 ## 3. ORFS Configuration
 
 The ORFS design configuration used for this block is:
@@ -126,6 +133,11 @@ Constraint notes:
 - The block clock is `SCK`.
 - A 10 ns period was used, corresponding to a 100 MHz target frequency.
 
+Evidence:
+
+![`config.mk` prepared for the `housekeeping_spi` OpenROAD run.](./images/Screenshot%202026-04-06%20at%2010.25.05%20PM.png)
+![`constraint.sdc` created with a 100 MHz clock on port `SCK`.](./images/Screenshot%202026-04-06%20at%2010.25.39%20PM.png)
+
 ## 4. OpenROAD Execution Flow
 
 The backend flow was run stage by stage:
@@ -163,6 +175,13 @@ Evidence source files:
 - `/workspaces/OpenROAD-flow-scripts/flow/reports/sky130hd/housekeeping_spi/base/synth_stat.txt`
 - `/workspaces/OpenROAD-flow-scripts/flow/reports/sky130hd/housekeeping_spi/base/synth_check.txt`
 
+Evidence:
+
+![Start of synthesis for `housekeeping_spi` using ORFS.](./images/Screenshot%202026-04-06%20at%2010.26.13%20PM.png)
+![Synthesis stage generating the gate-level netlist and synthesis database.](./images/Screenshot%202026-04-06%20at%2010.26.45%20PM.png)
+![Synthesis completion with generated netlist `1_2_yosys.v`.](./images/Screenshot%202026-04-06%20at%2010.26.57%20PM.png)
+![Synthesis reports showing cell count, area, and clean structural check.](./images/Screenshot%202026-04-06%20at%2010.27.09%20PM.png)
+
 ### 5.2 Floorplan
 
 Important floorplan metrics were extracted from:
@@ -185,6 +204,11 @@ Floorplan observations:
 - The floorplan was generated successfully from utilization-based sizing.
 - No floorplan errors were reported.
 - The resulting utilization left enough room for placement and routing.
+
+Evidence:
+
+![Floorplan stage initialization for `housekeeping_spi`.](./images/Screenshot%202026-04-06%20at%2010.31.07%20PM.png)
+![Floorplan completion showing die/core creation and initial utilization.](./images/Screenshot%202026-04-06%20at%2010.31.29%20PM.png)
 
 ### 5.3 Placement
 
@@ -216,6 +240,13 @@ Interpretation:
 - No routing overflow remained after placement optimization.
 - Congestion stayed below the routing target, indicating a healthy placement for subsequent CTS and routing.
 
+Evidence:
+
+![Placement stage execution for the selected block.](./images/Screenshot%202026-04-06%20at%2010.35.43%20PM.png)
+![Global placement convergence with routability-driven optimization enabled.](./images/Screenshot%202026-04-06%20at%2010.43.49%20PM.png)
+![Placement result showing zero routing overflow and acceptable congestion.](./images/Screenshot%202026-04-06%20at%2010.44.00%20PM.png)
+![Detailed placement and legalization completed successfully.](./images/Screenshot%202026-04-06%20at%2010.45.05%20PM.png)
+
 ### 5.4 Clock Tree Synthesis
 
 Relevant report:
@@ -236,6 +267,12 @@ CTS observations:
 - Clock tree insertion completed successfully.
 - The design remained timing clean after CTS.
 - No setup or hold failures were observed in the CTS report.
+
+Evidence:
+
+![CTS stage execution for `housekeeping_spi`.](./images/Screenshot%202026-04-06%20at%2010.46.12%20PM.png)
+![Clock tree synthesis completed with clean timing and inserted clock buffers.](./images/Screenshot%202026-04-06%20at%2010.46.22%20PM.png)
+![CTS timing summary showing no setup or hold violations.](./images/Screenshot%202026-04-06%20at%2010.46.32%20PM.png)
 
 ### 5.5 Routing
 
@@ -279,6 +316,13 @@ Interpretation:
 - Intermediate detailed-route DRC snapshots were resolved by the end of routing.
 - Final routing is clean and antenna-safe.
 
+Evidence:
+
+![Global routing stage started for the implemented block.](./images/Screenshot%202026-04-06%20at%2010.49.19%20PM.png)
+![Detailed routing progress showing iterative DRC repair during route optimization.](./images/Screenshot%202026-04-06%20at%2010.53.37%20PM.png)
+![Final routing completion with zero remaining route violations.](./images/Screenshot%202026-04-06%20at%2010.59.45%20PM.png)
+![Antenna check and final route cleanup completed successfully.](./images/Screenshot%202026-04-06%20at%2011.01.08%20PM.png)
+
 ### 5.6 Finish
 
 Relevant final report:
@@ -310,6 +354,12 @@ Final interpretation:
 - The block met the 100 MHz target comfortably.
 - Final signoff-style timing checks stayed clean.
 - Final power remained low, as expected for a compact SPI controller block.
+
+Evidence:
+
+![Finish stage generating final implementation outputs.](./images/Screenshot%202026-04-06%20at%2011.02.38%20PM.png)
+![Final OpenROAD handoff files generated, including DEF, ODB, netlist, and GDS.](./images/Screenshot%202026-04-06%20at%2011.02.47%20PM.png)
+![Final implementation summary showing successful completion of RTL-to-GDS for `housekeeping_spi`.](./images/Screenshot%202026-04-06%20at%2011.02.54%20PM.png)
 
 ## 6. Final Implementation Outputs
 
@@ -354,61 +404,7 @@ Key final outputs:
 /workspaces/OpenROAD-flow-scripts/flow/logs/sky130hd/housekeeping_spi/base
 ```
 
-## 8. Image Evidence
-
-The following screenshots were captured during the Week 6 run and are stored under [`Week6/images`](./images). They document the OpenROAD bring-up in Codespaces and can be used as evidence in the final submission.
-
-### Representative flow screenshots
-
-![Run screenshot 1](./images/Screenshot%202026-04-06%20at%2010.19.15%20PM.png)
-![Run screenshot 2](./images/Screenshot%202026-04-06%20at%2010.22.45%20PM.png)
-![Run screenshot 3](./images/Screenshot%202026-04-06%20at%2010.23.51%20PM.png)
-![Run screenshot 4](./images/Screenshot%202026-04-06%20at%2010.24.03%20PM.png)
-![Run screenshot 5](./images/Screenshot%202026-04-06%20at%2010.25.05%20PM.png)
-![Run screenshot 6](./images/Screenshot%202026-04-06%20at%2010.25.39%20PM.png)
-
-### Additional backend screenshots
-
-![Run screenshot 7](./images/Screenshot%202026-04-06%20at%2010.26.13%20PM.png)
-![Run screenshot 8](./images/Screenshot%202026-04-06%20at%2010.26.45%20PM.png)
-![Run screenshot 9](./images/Screenshot%202026-04-06%20at%2010.26.57%20PM.png)
-![Run screenshot 10](./images/Screenshot%202026-04-06%20at%2010.27.09%20PM.png)
-![Run screenshot 11](./images/Screenshot%202026-04-06%20at%2010.31.07%20PM.png)
-![Run screenshot 12](./images/Screenshot%202026-04-06%20at%2010.31.29%20PM.png)
-
-### Late-stage implementation screenshots
-
-![Run screenshot 13](./images/Screenshot%202026-04-06%20at%2010.35.43%20PM.png)
-![Run screenshot 14](./images/Screenshot%202026-04-06%20at%2010.43.49%20PM.png)
-![Run screenshot 15](./images/Screenshot%202026-04-06%20at%2010.44.00%20PM.png)
-![Run screenshot 16](./images/Screenshot%202026-04-06%20at%2010.45.05%20PM.png)
-![Run screenshot 17](./images/Screenshot%202026-04-06%20at%2010.46.12%20PM.png)
-![Run screenshot 18](./images/Screenshot%202026-04-06%20at%2010.46.22%20PM.png)
-![Run screenshot 19](./images/Screenshot%202026-04-06%20at%2010.46.32%20PM.png)
-![Run screenshot 20](./images/Screenshot%202026-04-06%20at%2010.49.19%20PM.png)
-![Run screenshot 21](./images/Screenshot%202026-04-06%20at%2010.53.37%20PM.png)
-![Run screenshot 22](./images/Screenshot%202026-04-06%20at%2010.59.45%20PM.png)
-![Run screenshot 23](./images/Screenshot%202026-04-06%20at%2011.01.08%20PM.png)
-![Run screenshot 24](./images/Screenshot%202026-04-06%20at%2011.02.38%20PM.png)
-![Run screenshot 25](./images/Screenshot%202026-04-06%20at%2011.02.47%20PM.png)
-![Run screenshot 26](./images/Screenshot%202026-04-06%20at%2011.02.54%20PM.png)
-![Run screenshot 27](./images/Screenshot%202026-04-06%20at%2011.42.18%20PM.png)
-
-## 9. Current Status
-
-`housekeeping_spi` has successfully completed the full ORFS implementation path:
-
-- RTL selection and setup
-- ORFS design creation
-- Synthesis
-- Floorplan
-- Placement
-- CTS
-- Routing
-- Finish
-- Final netlist, DEF, ODB, and GDS generation
-
-## 10. Gate-Level Simulation
+## 8. Gate-Level Simulation
 
 Standalone block-level GLS was performed using the synthesized gate-level netlist generated by ORFS:
 
@@ -469,3 +465,7 @@ The simulation also generated a VCD waveform dump:
 - `hkspi_gl.vcd`
 
 This waveform can be used for GTKWave-based signal validation in the next documentation step.
+
+Evidence:
+
+![Post-synthesis gate-level simulation pass for `housekeeping_spi` using the generated synthesized netlist.](./images/Screenshot%202026-04-06%20at%2011.42.18%20PM.png)

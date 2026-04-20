@@ -157,4 +157,5 @@ That makes this repository useful as both:
 ## Author
 
 **Vrinda Karuvanchery**  
-VLSI Physical Design and Verification Portfolio
+VLSI Physical Design Engineer  
+Portfolio: https://vrinda-karuvanchery.github.io/aboutme/

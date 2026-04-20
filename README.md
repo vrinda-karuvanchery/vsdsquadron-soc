@@ -11,7 +11,6 @@ It is structured to show not just the final result, but the engineering trail be
 - Focus: RTL-to-GDS, Gate-Level Simulation, STA, DRC, and physical signoff
 - Platform: SkyWater 130nm
 - Environment: GitHub Codespaces and local Ubuntu
-- Context: Concurrent with Star VLSI
 
 ## Highlighted Outcomes
 

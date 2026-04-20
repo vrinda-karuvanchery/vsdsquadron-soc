@@ -111,7 +111,7 @@ This repo includes evidence and notes around:
 - PDN/topology inspection
 - LEF, DEF, and GDS deliverable verification
 
-## Recommended Reading Order For Interviewers
+## Recommended Reading Order
 
 If you want the quickest way to understand the work, read these in order:
 
@@ -140,7 +140,7 @@ If you want the quickest way to understand the work, read these in order:
 
 This is intentionally not a minimal or cleaned-down demo repo.
 
-Interviewers and collaborators can see:
+Collaborators and reviewers can see:
 
 - the original RTL context
 - the integration environment

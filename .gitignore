@@ -4,6 +4,7 @@
 *.swo
 .vscode/
 .idea/
+.codex/
 
 # Python/cache
 __pycache__/
